@@ -547,6 +547,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "web-sys-simply"
+version = "0.1.0"
+dependencies = [
+ "getrandom",
+ "gloo-storage",
+ "js-sys",
+ "rand",
+ "uuid",
+ "wasm-bindgen",
+ "web-sys",
+ "weblog",
+ "yew",
+ "yew-router",
+]
+
+[[package]]
 name = "weblog"
 version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -566,22 +582,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
-]
-
-[[package]]
-name = "webyy-sys"
-version = "0.1.0"
-dependencies = [
- "getrandom",
- "gloo-storage",
- "js-sys",
- "rand",
- "uuid",
- "wasm-bindgen",
- "web-sys",
- "weblog",
- "yew",
- "yew-router",
 ]
 
 [[package]]
