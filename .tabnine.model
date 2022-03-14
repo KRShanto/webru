@@ -1,0 +1,7 @@
+schema_version: v1
+models:
+  - model:
+      language: rust
+    mask:
+      include:
+        - "*.rs"

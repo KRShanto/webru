@@ -1,6 +1,6 @@
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::{JsCast, JsValue};
-use web_sys::{window, Document, Element, HtmlCollection, Location, Node, NodeList};
+use web_sys::{window, Document, Element, HtmlCollection, HtmlElement, Location, Node, NodeList};
 
 // exporting functions
 pub use global::*;
@@ -10,14 +10,17 @@ pub use timer::*;
 mod selectors {
     use super::*;
 
+    // tested
     pub fn get_element_by_id(id: &str) -> Option<Element> {
         document().get_element_by_id(id)
     }
 
+    // tested
     pub fn get_elements_by_classname(classname: &str) -> HtmlCollection {
         document().get_elements_by_class_name(classname)
     }
 
+    // tested
     pub fn get_elements_by_classname_inside_vec(classname: &str) -> Vec<Element> {
         let mut i = 0;
         let mut vec: Vec<Element> = Vec::new();
@@ -30,14 +33,17 @@ mod selectors {
         vec
     }
 
+    // tested
     pub fn query_selector(selector: &str) -> Option<Element> {
         document().query_selector(selector).unwrap()
     }
 
+    // tested
     pub fn query_selector_all(selector: &str) -> NodeList {
         document().query_selector_all(selector).unwrap()
     }
 
+    // tested
     pub fn query_selector_all_inside_vec(selector: &str) -> Vec<Node> {
         let mut i = 0;
         let mut vec: Vec<Node> = Vec::new();
@@ -48,6 +54,11 @@ mod selectors {
         }
 
         vec
+    }
+
+    // tested
+    pub fn create_element(element_name: &str) -> Element {
+        document().create_element(element_name).unwrap()
     }
 }
 
@@ -60,14 +71,14 @@ mod timer {
     {
         let window = window().unwrap();
 
-        let closure = Closure::wrap(Box::new(handler) as Box<dyn Fn()>);
+        let callback = Closure::wrap(Box::new(handler) as Box<dyn Fn()>);
 
         let result = window.set_timeout_with_callback_and_timeout_and_arguments_0(
-            closure.as_ref().unchecked_ref(),
+            callback.as_ref().unchecked_ref(),
             timeout,
         );
 
-        closure.forget();
+        callback.forget();
         // TODO: I will mension some details about this code and why `.forget()` is important when I will create documentation
 
         result
@@ -85,14 +96,14 @@ mod timer {
     {
         let window = window().unwrap();
 
-        let closure = Closure::wrap(Box::new(handler) as Box<dyn Fn()>);
+        let callback = Closure::wrap(Box::new(handler) as Box<dyn Fn()>);
 
         let result = window.set_interval_with_callback_and_timeout_and_arguments_0(
-            closure.as_ref().unchecked_ref(),
+            callback.as_ref().unchecked_ref(),
             timeout,
         );
 
-        closure.forget();
+        callback.forget();
         // TODO: I will mension some details about this code and why `.forget()` is important when I will create documentation
 
         result
@@ -108,36 +119,56 @@ mod timer {
 mod global {
     use super::*;
 
+    // tested
     pub fn document() -> Document {
         let window = window().unwrap();
         window.document().unwrap()
     }
-
+    // tested
     pub fn location() -> Location {
         document().location().unwrap()
     }
 
+    // tested
     pub fn url() -> String {
         location().href().unwrap()
     }
 
+    // tested
+    pub fn body() -> HtmlElement {
+        document().body().unwrap()
+    }
+
+    // tested
     pub fn domain_name() -> String {
         location().hostname().unwrap()
     }
 
+    // tested
     pub fn path_name() -> String {
         location().pathname().unwrap()
     }
 
+    // tested
     pub fn reload() {
         location().reload().unwrap()
     }
 
+    // tested
     pub fn alert(msg: &str) {
         window().unwrap().alert_with_message(msg).unwrap()
     }
 
+    // tested
     pub fn prompt(msg: &str) -> Option<String> {
         window().unwrap().prompt_with_message(msg).unwrap() // if None: it means the user clicked "cancel" button, else it means the user clicked "OK" button
+    }
+
+    // this doesn't need to be tested
+    pub fn callback<T: 'static>(handler: T) -> Closure<dyn Fn()>
+    where
+        T: Fn(),
+    {
+        Closure::wrap(Box::new(handler) as Box<dyn Fn()>)
     }
 }
