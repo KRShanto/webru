@@ -1,6 +1,6 @@
 [package]
 name = "webru"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 description = "Frequently used javascript functions for Rust and WebAssembly"
 license = "MIT OR Apache-2.0"
@@ -10,7 +10,7 @@ repository = "https://github.com/Shanto2005/webru"
 homepage = "https://github.com/Shanto2005/webru"
 readme = "README.md"
 documentation = "https://docs.rs/webru"
-categories = ["web"]
+categories = ["wasm", "web-programming"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
