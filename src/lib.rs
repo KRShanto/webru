@@ -2,9 +2,10 @@
 //!
 //! `webru` is a binding for [web-sys](https://crates.io/crates/web-sys)
 //!
-//! This crate assumes that you only use this crate inside browser. Not any other javascript runtime such as `Node.js`
-#![warn(missing_docs)]
+//! This crate assumes that you will only use this crate inside browser. Not any other javascript runtime such as `Node.js`
+//!
 
+#![warn(missing_docs)]
 use wasm_bindgen::prelude::Closure;
 use wasm_bindgen::{JsCast, JsValue};
 use web_sys::{window, Document, Element, HtmlCollection, HtmlElement, Location, Node, NodeList};
@@ -739,6 +740,7 @@ mod global {
     /// Javascript's `setTimeout` function
     ///
     /// ```rust
+    /// use wasm_bindgen::JsCast;
     /// use webru::callback;
     /// use weblog::console_log;
     ///
@@ -773,6 +775,7 @@ mod global {
     /// ```rust
     /// use webru::{body, callback, create_element};
     /// use web_sys::HtmlElement;
+    /// use wasm_bindgen::JsCast;
     /// use weblog::console_log;
     ///     
     ///

@@ -1,9 +1,9 @@
-#![allow(dead_code, unused_variables, unused_imports)]
+// #![allow(dead_code, unused_variables, unused_imports)]
 
 use wasm_bindgen::JsCast;
 use wasm_bindgen_test::wasm_bindgen_test_configure;
 use wasm_bindgen_test::*;
-use web_sys::{console, window, Document, Element, HtmlElement, Location};
+use web_sys::{window, HtmlElement};
 use weblog::console_log;
 
 use std::cell::Cell;
@@ -375,14 +375,12 @@ fn reload_test() {
     body().append_child(&hr2).unwrap();
 }
 
-// TODO: I am ignoring this test for now
-// #[wasm_bindgen_test]
+#[wasm_bindgen_test]
 fn alert_test() {
     alert("If you see this message, the test `alert_test` has passed");
 }
 
-// TODO: I am ignoring this test for now
-// #[wasm_bindgen_test]
+#[wasm_bindgen_test]
 fn prompt_test() {
     prompt("If you see this prompt, the test `prompt_test` has passed");
 }
