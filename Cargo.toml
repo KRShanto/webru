@@ -2,6 +2,15 @@
 name = "webru"
 version = "0.1.0"
 edition = "2021"
+description = "Frequently used javascript functions for Rust and WebAssembly"
+license = "MIT OR Apache-2.0"
+author = "KR Shanto <khalilorrahman2005@gmail.com>"
+keywords = ["Webassembly", "web-sys", "web"]
+repository = "https://github.com/Shanto2005/webru"
+homepage = "https://github.com/Shanto2005/webru"
+readme = "README.md"
+documentation = "https://docs.rs/webru"
+categories = ["web"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
