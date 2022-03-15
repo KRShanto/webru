@@ -170,7 +170,7 @@ fn query_selector_test() {
     p.set_class_name(PARAGRAPH_CLASS);
 
     {
-        // getting the element with the `get_element_by_id` without inserting it into the DOM
+        // getting the element with the `query_selector` without inserting it into the DOM
         let p = query_selector(&format!("#{}", PARAGRAPH_ID));
 
         // at this moment, this should be None because the element hasn't been inserted in the <body>
@@ -295,7 +295,15 @@ fn url_test() {
 
     console_log!("The value of `url()` for your website is: ", url());
 
-    assert_eq!(url(), "http://127.0.0.1:8000/");
+    assert_eq!(
+        url(),
+        web_sys::window()
+            .unwrap()
+            .document()
+            .unwrap()
+            .url()
+            .unwrap()
+    );
 }
 
 #[wasm_bindgen_test]
@@ -327,13 +335,13 @@ fn reload_test() {
     // NOTE: You need to test it manually
 
     // creating a <button> for reloading the page
-    let button = create_element("button");
+    let button = create_element("button")
+        .dyn_ref::<HtmlElement>()
+        .unwrap()
+        .clone();
 
     // adding some attributes
     button.set_inner_html("reload page");
-
-    // converting `Element` to `HtmlElement` so we can use the `set_onclick()` function
-    let button = button.dyn_ref::<HtmlElement>().unwrap().clone();
 
     // callback/callback when the button will be clicked
     let callback = callback(|| {
