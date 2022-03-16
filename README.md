@@ -76,3 +76,11 @@ let h1_from_dom: Option<Element> = get_element_by_id("heading-1");
 assert_eq!(h1_from_dom.unwrap(), h1);
 
 ```
+
+## Warning
+
+This project is not well tested. So make sure to test every functions from this crate you used in your project before going to production.
+
+## Contributions
+
+Your valuable PRs and Issues are welcome. Note that all the contribution submitted by you, shall be licensed as MIT or APACHE 2.0 at your choice, without any additional terms or conditions.
