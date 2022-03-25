@@ -577,3 +577,111 @@ fn set_interval_clear_interval_test() {
     // inserting the <hr> into the DOM
     body().append_child(&hr2).unwrap();
 }
+
+#[wasm_bindgen_test]
+fn timeout_test() {
+    // Wait for 5 secs and look at the console and see if there is an error message. If not then these tests passed.
+
+    #[derive(Clone, Copy, Debug, PartialEq)]
+    enum EarthShape {
+        Flat,
+        Round,
+    }
+
+    let earth_shape = Rc::new(Cell::new(EarthShape::Flat));
+
+    {
+        let earth_shape = Rc::clone(&earth_shape);
+        // setTimeout without stopping it
+        Timeout::start(
+            move || {
+                earth_shape.set(EarthShape::Round);
+            },
+            4000,
+        );
+    }
+
+    set_timeout(
+        move || {
+            assert_eq!(earth_shape.get(), EarthShape::Round);
+        },
+        5000,
+    )
+    .unwrap();
+
+    let earth_shape = Rc::new(Cell::new(EarthShape::Flat));
+
+    {
+        let earth_shape = Rc::clone(&earth_shape);
+        // setTimeout by stopping it
+        let timeout_id = Timeout::start(
+            move || {
+                earth_shape.set(EarthShape::Round);
+            },
+            4000,
+        );
+        timeout_id.stop();
+    }
+
+    set_timeout(
+        move || {
+            assert_eq!(earth_shape.get(), EarthShape::Flat);
+        },
+        5000,
+    )
+    .unwrap();
+}
+
+#[wasm_bindgen_test]
+fn interval_test() {
+    // Wait for 5-10 secs and look at the console and see if there is an error message. If not then these tests passed.
+
+    #[derive(Clone, Copy, Debug, PartialEq)]
+    enum EarthShape {
+        Flat,
+        Round,
+    }
+
+    let earth_shape = Rc::new(Cell::new(EarthShape::Flat));
+
+    {
+        let earth_shape = Rc::clone(&earth_shape);
+        // setInterval without stopping it
+        Interval::start(
+            move || {
+                earth_shape.set(EarthShape::Round);
+            },
+            4000,
+        );
+    }
+
+    set_interval(
+        move || {
+            assert_eq!(earth_shape.get(), EarthShape::Round);
+        },
+        5000,
+    )
+    .unwrap();
+
+    let earth_shape = Rc::new(Cell::new(EarthShape::Flat));
+
+    {
+        let earth_shape = Rc::clone(&earth_shape);
+        // setInterval by stopping it
+        let interval_id = Interval::start(
+            move || {
+                earth_shape.set(EarthShape::Round);
+            },
+            4000,
+        );
+        interval_id.stop();
+    }
+
+    set_interval(
+        move || {
+            assert_eq!(earth_shape.get(), EarthShape::Flat);
+        },
+        5000,
+    )
+    .unwrap();
+}
