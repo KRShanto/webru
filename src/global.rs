@@ -1,4 +1,5 @@
 use wasm_bindgen::closure::Closure;
+use wasm_bindgen::JsCast;
 use web_sys::{window, Document, Element, HtmlElement, Location};
 
 /// Get the [`web_sys::Document`](https://docs.rs/web-sys/0.3.56/web_sys/struct.Document.html) Object
@@ -388,4 +389,68 @@ where
 ///```
 pub fn create_element(element_name: &str) -> Element {
     document().create_element(element_name).unwrap()
+}
+
+/// Call a closure in a specific window width with media query
+///
+/// # Panics
+///
+/// This function will panic if you try to call this outside of the web such as `node.js` runtime
+///
+/// # Example
+///
+/// ```rust
+/// use webru::{body, create_element, media_query};
+///
+/// let p = create_element("p");
+/// p.set_inner_html("You cannot see me if you are less then 1000px");
+///
+/// // render the "p" tag into the DOM
+/// body().append_child(&p).unwrap();
+///
+/// media_query(
+///     // if the window width is less then 1000px
+///     {
+///         let p = p.clone();
+///         move || {
+///             p.set_inner_html("");
+///         }
+///     },
+///     // if the window width is more then 1000px
+///     move || {
+///         p.clone()
+///             .set_inner_html("You cannot see me if you are less then 1000px");
+///     },
+///     // the maxium width when the callback will be called
+///     1000,
+/// );
+/// ```
+pub fn media_query<T1: Fn() + 'static, T2: Fn() + 'static>(
+    if_media_matched: T1,
+    if_media_doesnt_matched: T2,
+    max_width: u128,
+) {
+    let query = window()
+        .unwrap()
+        .match_media(&format!("(max-width: {}px)", max_width))
+        .unwrap()
+        .unwrap();
+
+    let cb = callback({
+        let query = query.clone();
+
+        move || {
+            if query.matches() {
+                if_media_matched();
+            } else {
+                if_media_doesnt_matched();
+            }
+        }
+    });
+
+    query
+        .add_listener_with_opt_callback(Some(cb.as_ref().dyn_ref().unwrap()))
+        .unwrap();
+
+    cb.forget();
 }

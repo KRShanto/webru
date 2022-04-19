@@ -685,3 +685,31 @@ fn interval_test() {
     )
     .unwrap();
 }
+
+#[wasm_bindgen_test]
+fn media_query_text() {
+    use webru::{body, create_element, media_query};
+
+    let p = create_element("p");
+    p.set_inner_html("You cannot see me if you are less then 1000px");
+
+    // render the "p" tag into the DOM
+    body().append_child(&p).unwrap();
+
+    media_query(
+        // if the window width is less then 1000px
+        {
+            let p = p.clone();
+            move || {
+                p.set_inner_html("");
+            }
+        },
+        // if the window width is more then 1000px
+        move || {
+            p.clone()
+                .set_inner_html("You cannot see me if you are less then 1000px");
+        },
+        // the maxium width when the callback will be called
+        1000,
+    );
+}
