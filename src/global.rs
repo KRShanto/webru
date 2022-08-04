@@ -345,6 +345,14 @@ where
     Closure::wrap(Box::new(handler) as Box<dyn Fn()>)
 }
 
+pub fn callback_with_arg<T, A>(handler: T) -> Closure<dyn Fn(A)>
+where
+    T: Fn(A) + 'static,
+    A: wasm_bindgen::convert::FromWasmAbi + 'static,
+{
+    Closure::wrap(Box::new(handler) as Box<dyn Fn(A)>)
+}
+
 /// Javascript [`document.createElement`](https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement) method
 ///
 /// This function will create a new [`Element`](https://docs.rs/web-sys/0.3.56/web_sys/struct.Element.html) and return it.
